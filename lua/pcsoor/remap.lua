@@ -8,7 +8,6 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("n", "=ap", "ma=ap'a")
 
 vim.keymap.set("i", "<C-c>", "<Esc>")
-
 vim.keymap.set("n", "<leader>q", ":bd<Cr>")
 
 vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
@@ -48,3 +47,4 @@ vim.keymap.set("n", "<C-j>", "<C-w>j")
 vim.keymap.set("n", "<C-k>", "<C-w>k")
 vim.keymap.set("n", "<C-l>", "<C-w>l")
 vim.keymap.set('n', '<C-w>v', '<C-w>v<C-w>l', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-w>s', '<C-w>s<C-w>j', { noremap = true, silent = true })

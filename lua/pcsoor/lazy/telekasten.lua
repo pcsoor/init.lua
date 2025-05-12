@@ -3,7 +3,8 @@ return {
   dependencies = {"nvim-telescope/telescope.nvim"},
   config = function()
     require("telekasten").setup({
-      home = vim.fn.expand("~/zettelkasten")
+      home = vim.fn.expand("~/zettelkasten"),
+      image_subdir = "./",
     })
     -- Launch panel if nothing is typed after <leader>z
     vim.keymap.set("n", "<leader>z", "<cmd>Telekasten panel<CR>")
