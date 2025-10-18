@@ -29,6 +29,11 @@ return {
                         print("disabled")
                         return true
                     end
+                    
+                    -- Temporarily disable Tree-sitter for Ruby to use traditional syntax highlighting
+                    if lang == "ruby" then
+                        return true
+                    end
 
                     local max_filesize = 100 * 1024 -- 100 KB
                     local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
@@ -46,7 +51,7 @@ return {
                 -- Set this to `true` if you depend on "syntax" being enabled (like for indentation).
                 -- Using this option may slow down your editor, and you may see some duplicate highlights.
                 -- Instead of true it can also be a list of languages
-                additional_vim_regex_highlighting = { "markdown" },
+                additional_vim_regex_highlighting = { "markdown", "ruby" },
             },
         })
 

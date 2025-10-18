@@ -1,4 +1,5 @@
--- vim.opt.guicursor = ""
+-- Disable cursor animations and set cursor to block in all modes
+vim.opt.guicursor = ""
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
@@ -21,11 +22,33 @@ vim.opt.incsearch = true
 
 vim.opt.termguicolors = true
 
+-- Enable syntax highlighting
+vim.cmd("syntax enable")
+
+-- Disable all cursor animations and transitions
+vim.opt.guicursor = "a:block-blinkon0"
+vim.opt.cursorline = false
+
+-- Disable smooth scrolling and animations
+vim.opt.lazyredraw = false
+vim.opt.ttyfast = true
+vim.opt.redrawtime = 0
+
+-- Force immediate screen updates
+vim.opt.updatetime = 50
+
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
+
+-- Disable cursor animations and smooth scrolling
+vim.opt.lazyredraw = false
+vim.opt.ttyfast = true
+
+-- Disable cursor line to prevent visual artifacts
+vim.opt.cursorline = false
 
 vim.opt.colorcolumn = "80"
 

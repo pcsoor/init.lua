@@ -1,5 +1,11 @@
 return {
   {
+    "haishanh/night-owl.vim",
+    config = function()
+      vim.cmd("colorscheme night-owl")
+    end
+  },
+  {
     "EdenEast/nightfox.nvim",
     name = "nightfox",
     config = function()
@@ -50,7 +56,7 @@ return {
     "vague2k/vague.nvim",
     name = "vague",
     config = function()
-      vim.cmd.colorscheme("vague")
+      -- vim.cmd.colorscheme("vague")
     end
   },
   {

@@ -46,7 +46,8 @@ return {
                 "rust_analyzer",
                 "eslint",
                 "solargraph",
-                "ts_ls"
+                "ts_ls",
+                "ruby_lsp",
             },
             handlers = {
                 function(server_name) -- default handler (optional)
@@ -55,7 +56,7 @@ return {
                     }
                 end,
 
-                zls = function()
+                ["zls"] = function()
                     local lspconfig = require("lspconfig")
                     lspconfig.zls.setup({
                         root_dir = lspconfig.util.root_pattern(".git", "build.zig", "zls.json"),
@@ -69,8 +70,8 @@ return {
                     })
                     vim.g.zig_fmt_parse_errors = 0
                     vim.g.zig_fmt_autosave = 0
-
                 end,
+                
                 ["lua_ls"] = function()
                     local lspconfig = require("lspconfig")
                     lspconfig.lua_ls.setup {
@@ -91,6 +92,14 @@ return {
                                 }
                             }
                         }
+                    }
+                end,
+
+                ["ruby_lsp"] = function()
+                    local lspconfig = require("lspconfig")
+                    lspconfig.ruby_lsp.setup {
+                        capabilities = capabilities,
+                        cmd = { os.getenv("HOME") .. "/.rbenv/shims/ruby-lsp" }
                     }
                 end,
             }
