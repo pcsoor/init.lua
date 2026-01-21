@@ -1,7 +1,4 @@
 -- Disable netrw at the very start to prevent conflicts with nvim-tree
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-
 require("pcsoor.set")
 require("pcsoor.remap")
 require("pcsoor.lazy_init")
