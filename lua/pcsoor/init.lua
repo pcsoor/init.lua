@@ -1,4 +1,3 @@
--- Disable netrw at the very start to prevent conflicts with nvim-tree
 require("pcsoor.set")
 require("pcsoor.remap")
 require("pcsoor.lazy_init")
@@ -46,6 +45,11 @@ autocmd('LspAttach', {
         vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
         vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
         vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
+
+        local client = vim.lsp.get_client_by_id(e.data.client_id)
+        if client and client.name == "eslint" then
+            vim.keymap.set("n", "<leader>oi", "<cmd>EslintFixAll<cr>", opts)
+        end
     end
 })
 

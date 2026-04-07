@@ -33,8 +33,8 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
-      vim.g.gruvbox_material_enable_italic = true
-      vim.cmd.colorscheme('gruvbox-material')
+      -- vim.g.gruvbox_material_enable_italic = true
+      -- vim.cmd.colorscheme('gruvbox-material')
     end
   },
   {
@@ -43,7 +43,7 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
-      -- vim.cmd.colorscheme('moonfly')
+      vim.cmd.colorscheme('moonfly')
     end
   },
   {

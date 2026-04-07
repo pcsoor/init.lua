@@ -1,14 +1,29 @@
 return {
     "nvim-telescope/telescope.nvim",
 
-    tag = "0.1.5",
+    branch = "master",
 
     dependencies = {
         "nvim-lua/plenary.nvim"
     },
 
     config = function()
-        require('telescope').setup({})
+        require('telescope').setup({
+          defaults = {
+            path_display = { "truncate" },
+            layout_config = {
+              horizontal = {
+                preview_width = 0.4,
+              },
+            },
+          },
+          pickers = {
+            find_files = {
+              hidden = true,
+              find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" },
+            }
+          }
+        })
 
         local builtin = require('telescope.builtin')
         vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
@@ -27,6 +42,25 @@ return {
             builtin.grep_string({ search = vim.fn.input("Grep > ") })
         end)
         vim.keymap.set('n', '<leader>vh', builtin.help_tags, {})
+        vim.keymap.set('n', '<leader>gc', function()
+            builtin.git_bcommits({
+                attach_mappings = function(_, map)
+                    map("i", "<CR>", function(prompt_bufnr)
+                        local actions = require("telescope.actions")
+                        local selection = require("telescope.actions.state").get_selected_entry()
+                        actions.close(prompt_bufnr)
+                        vim.cmd("Gvdiffsplit " .. selection.value)
+                    end)
+                    map("n", "<CR>", function(prompt_bufnr)
+                        local actions = require("telescope.actions")
+                        local selection = require("telescope.actions.state").get_selected_entry()
+                        actions.close(prompt_bufnr)
+                        vim.cmd("Gvdiffsplit " .. selection.value)
+                    end)
+                    return true
+                end,
+            })
+        end, { desc = "Git commits for current file (diff)" })
     end
 }
 

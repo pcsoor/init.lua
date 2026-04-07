@@ -1,15 +1,5 @@
-local root_files = {
-  '.luarc.json',
-  '.luarc.jsonc',
-  '.luacheckrc',
-  '.stylua.toml',
-  'stylua.toml',
-  'selene.toml',
-  'selene.yml',
-  '.git',
-}
-
 return {
+{
     "neovim/nvim-lspconfig",
     dependencies = {
         "stevearc/conform.nvim",
@@ -28,7 +18,20 @@ return {
     config = function()
         require("conform").setup({
             formatters_by_ft = {
-            }
+                typescript = { "prettier" },
+                javascript = { "prettier" },
+                typescriptreact = { "prettier" },
+                javascriptreact = { "prettier" },
+                json = { "prettier" },
+                css = { "prettier" },
+                html = { "prettier" },
+                yaml = { "prettier" },
+                markdown = { "prettier" },
+            },
+            format_on_save = {
+                timeout_ms = 2500,
+                lsp_format = "fallback",
+            },
         })
         local cmp = require('cmp')
         local cmp_lsp = require("cmp_nvim_lsp")
@@ -46,7 +49,6 @@ return {
                 "rust_analyzer",
                 "eslint",
                 "solargraph",
-                "ts_ls",
                 "ruby_lsp",
             },
             handlers = {
@@ -140,4 +142,48 @@ return {
             },
         })
     end
+},
+
+{
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+    config = function()
+        vim.api.nvim_create_autocmd("BufReadCmd", {
+            pattern = { "diffview://*", "fugitive://*" },
+            callback = function(args)
+                vim.bo[args.buf].filetype = ""
+            end,
+        })
+
+        require("typescript-tools").setup({
+            on_attach = function(_, bufnr)
+                local opts = { buffer = bufnr }
+                vim.keymap.set("n", "<leader>oi", "<cmd>TSToolsOrganizeImports<cr>", opts)
+                vim.keymap.set("n", "<leader>ru", "<cmd>TSToolsRemoveUnusedImports<cr>", opts)
+                vim.keymap.set("n", "<leader>rf", "<cmd>TSToolsRenameFile<cr>", opts)
+                vim.keymap.set("n", "<leader>ia", "<cmd>TSToolsAddMissingImports<cr>", opts)
+                vim.keymap.set("n", "<leader>fx", "<cmd>TSToolsFixAll<cr>", opts)
+            end,
+            settings = {
+                tsserver_file_preferences = {
+                    includeInlayParameterNameHints = "all",
+                    includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                    includeInlayFunctionParameterTypeHints = true,
+                    includeInlayVariableTypeHints = true,
+                    includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                    includeInlayPropertyDeclarationTypeHints = true,
+                    includeInlayFunctionLikeReturnTypeHints = true,
+                    includeInlayEnumMemberValueHints = true,
+                    includeCompletionsForModuleExports = true,
+                    quotePreference = "auto",
+                },
+                tsserver_format_options = {
+                    allowIncompleteCompletions = false,
+                    allowRenameOfImportPath = false,
+                },
+            },
+        })
+    end,
+},
 }
