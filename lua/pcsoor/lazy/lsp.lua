@@ -159,7 +159,12 @@ return {
         require("typescript-tools").setup({
             on_attach = function(_, bufnr)
                 local opts = { buffer = bufnr }
-                vim.keymap.set("n", "<leader>oi", "<cmd>TSToolsOrganizeImports<cr>", opts)
+                vim.keymap.set("n", "<leader>oi", function()
+                    vim.lsp.buf.code_action({
+                        apply = true,
+                        context = { only = { "source.fixAll.eslint" } },
+                    })
+                end, opts)
                 vim.keymap.set("n", "<leader>ru", "<cmd>TSToolsRemoveUnusedImports<cr>", opts)
                 vim.keymap.set("n", "<leader>rf", "<cmd>TSToolsRenameFile<cr>", opts)
                 vim.keymap.set("n", "<leader>ia", "<cmd>TSToolsAddMissingImports<cr>", opts)

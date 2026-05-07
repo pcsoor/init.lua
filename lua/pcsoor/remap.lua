@@ -52,17 +52,45 @@ vim.keymap.set('n', '<C-w>v', '<cmd>vnew<cr>', { noremap = true, silent = true }
 vim.keymap.set('n', '<C-w>s', '<cmd>new<cr>', { noremap = true, silent = true })
 
 -- resize splits (~20% of window size)
-vim.keymap.set("n", "<C-w>H", function() vim.cmd("vertical resize -" .. math.floor(vim.o.columns * 0.05)) end, { desc = "Shrink split left" })
-vim.keymap.set("n", "<C-w>L", function() vim.cmd("vertical resize +" .. math.floor(vim.o.columns * 0.05)) end, { desc = "Grow split right" })
-vim.keymap.set("n", "<C-w>K", function() vim.cmd("resize +" .. math.floor(vim.o.lines * 0.05)) end, { desc = "Grow split up" })
-vim.keymap.set("n", "<C-w>J", function() vim.cmd("resize -" .. math.floor(vim.o.lines * 0.05)) end, { desc = "Shrink split down" })
+vim.keymap.set("n", "<C-w>H", function() vim.cmd("vertical resize -" .. math.floor(vim.o.columns * 0.05)) end,
+  { desc = "Shrink split left" })
+vim.keymap.set("n", "<C-w>L", function() vim.cmd("vertical resize +" .. math.floor(vim.o.columns * 0.05)) end,
+  { desc = "Grow split right" })
+vim.keymap.set("n", "<C-w>K", function() vim.cmd("resize +" .. math.floor(vim.o.lines * 0.05)) end,
+  { desc = "Grow split up" })
+vim.keymap.set("n", "<C-w>J", function() vim.cmd("resize -" .. math.floor(vim.o.lines * 0.05)) end,
+  { desc = "Shrink split down" })
+
+-- format
+vim.keymap.set("n", "<leader>f", function()
+  require("conform").format({ async = true, lsp_fallback = true })
+end, { desc = "Format file" })
 
 -- inlay hints
 vim.keymap.set("n", "<leader>ih", function()
-    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 end, { desc = "Toggle inlay hints" })
 
 -- terminal
 vim.keymap.set("n", "<leader>ts", "<cmd>split | terminal<cr>", { desc = "Terminal horizontal split" })
 vim.keymap.set("n", "<leader>tv", "<cmd>vsplit | terminal<cr>", { desc = "Terminal vertical split" })
 vim.keymap.set("n", "<leader>tt", "<cmd>tabnew | terminal<cr>", { desc = "Terminal new tab" })
+
+vim.keymap.set('n', '<leader>cp', function()
+  local filepath = vim.fn.expand('%:p')
+  local git_root = vim.fn.system('git rev-parse --show-toplevel 2> /dev/null')
+
+  git_root = vim.trim(git_root)
+  if vim.v.shell_error == 0 and git_root ~= "" then
+    local prefix = git_root .. "/"
+    if vim.startswith(filepath, prefix) then
+      -- Remove the git root and the trailing slash
+      filepath = filepath:sub(#prefix + 1)
+    end
+  else
+    filepath = vim.fn.expand('%')
+  end
+
+  vim.fn.setreg('+', filepath)
+  print("Copied Git path: " .. filepath)
+end, { desc = "Copy file path relative to Git root" })

@@ -25,7 +25,6 @@ return {
     "loctvl842/monokai-pro.nvim",
     name = "monokai-pro",
     config = function()
-      -- vim.cmd("colorscheme monokai-pro-ristretto")
     end
   },
   {
@@ -40,16 +39,16 @@ return {
   {
     "bluz71/vim-moonfly-colors",
     name = "moonfly",
-    lazy = false,
-    priority = 1000,
     config = function()
-      vim.cmd.colorscheme('moonfly')
+      vim.g.moonflyItalics = true
     end
   },
   {
     "rebelot/kanagawa.nvim",
+    lazy = false,
+    priority = 1000,
     config = function()
-      -- vim.cmd.colorscheme("kanagawa-dragon")
+      vim.cmd.colorscheme("kanagawa")
     end
   },
   {
